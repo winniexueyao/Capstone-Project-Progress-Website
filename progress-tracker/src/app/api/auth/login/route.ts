@@ -18,6 +18,13 @@ export async function POST(request: NextRequest) {
     const db = await getDb();
     
     // 查询用户
+    if (!db) {
+      return NextResponse.json({ 
+        success: false, 
+        message: '数据库连接失败' 
+      }, { status: 500 });
+    }
+    
     const user = await db.get('SELECT * FROM Users WHERE username = ?', [username]);
     if (!user) {
       return NextResponse.json({ 

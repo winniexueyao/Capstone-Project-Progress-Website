@@ -10,6 +10,13 @@ export async function GET() {
     
     // 检查是否已有管理员账号
     const db = await getDb();
+    if (!db) {
+      return NextResponse.json({ 
+        success: false, 
+        message: '数据库连接失败' 
+      }, { status: 500 });
+    }
+    
     const adminUser = await db.get('SELECT * FROM Users WHERE role = ?', ['admin']);
     
     if (!adminUser) {
@@ -58,6 +65,12 @@ export async function POST(request: NextRequest) {
     }
     
     const db = await getDb();
+    if (!db) {
+      return NextResponse.json({ 
+        success: false, 
+        message: '数据库连接失败' 
+      }, { status: 500 });
+    }
     
     // 检查用户名是否已存在
     const existingUser = await db.get('SELECT * FROM Users WHERE username = ?', [username]);
