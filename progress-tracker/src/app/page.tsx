@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
   Container, 
@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/ui-components';
 
 export default function HomePage() {
+  const [activeTab, setActiveTab] = useState('overall'); // State to track the active tab
   // 项目总体进度数据
   const projectProgress = {
     overall: 75,
@@ -62,15 +63,11 @@ export default function HomePage() {
     return new Date(dateString).toLocaleDateString('zh-CN');
   };
 
-  return (
-    <main className="min-h-screen bg-gray-50 py-12">
-      <Container>
-        {/* 页面标题 */}
-        <div className="mb-12 text-center">
-          <PageTitle className="text-3xl md:text-4xl mb-3">毕设项目进度展示</PageTitle>
-          <PageDescription className="text-xl">实时跟踪项目进展和团队成员工作状态</PageDescription>
-        </div>
-
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'overall':
+        return (
+          <>
         {/* 项目总体进度 */}
         <div className="mb-12">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6">项目总体进度</h2>
@@ -259,6 +256,96 @@ export default function HomePage() {
               </Card>
             </Link>
           </div>
+        </div></>
+        );
+      case 'milestonesReached':
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle>里程碑达成</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-2 flex justify-between text-sm">
+                <span>已达成里程碑</span>
+                <span>{projectProgress.milestonesReached}%</span>
+              </div>
+              <Progress value={projectProgress.milestonesReached} className="mb-4" />
+              <p className="text-sm text-gray-500">已达成6/10个里程碑</p>
+              <div className="mt-4 text-center">
+                <Link href="/details/milestonesReached" legacyBehavior>
+                <a className="text-blue-600 hover:underline">查看详情</a>
+                </Link>
+                
+              </div>
+              <div className="divide-y divide-gray-200">
+              {recentMilestones.map(milestone => (
+                <div key={milestone.id} className="p-6 flex justify-between items-center">
+                  <div>
+                    <h3 className="font-medium text-gray-900">{milestone.title}</h3>
+                    <p className="text-sm text-gray-500">计划日期: {formatDate(milestone.date)}</p>
+                  </div>
+                  <div>
+                    {getStatusBadge(milestone.status)}
+                  </div>
+                </div>
+              ))}
+            </div>
+              
+              
+            </CardContent>
+          </Card>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <main className="min-h-screen bg-gray-50 py-12">
+      <Container>
+        {/* 页面标题 */}
+        <div className="mb-12 text-center">
+          <PageTitle className="text-3xl md:text-4xl mb-3">AI-Powered Counseling Ecosystem for Adolescent Mental Health Support</PageTitle>
+          {/* <PageDescription className="text-xl">实时跟踪项目进展和团队成员工作状态</PageDescription> */}
+        </div>
+
+        {/* Tabs */}
+        <div className="mb-6 flex justify-center space-x-4">
+          <button 
+            className={`px-4 py-2 rounded ${activeTab === 'introduction' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+            onClick={() => setActiveTab('introduction')}
+          >
+            Introduction 
+          </button>
+          <button 
+            className={`px-4 py-2 rounded ${activeTab === 'tasksCompleted' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+            onClick={() => setActiveTab('performance')}
+          >
+            Performance
+          </button>
+          <button 
+            className={`px-4 py-2 rounded ${activeTab === 'milestonesReached' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+            onClick={() => setActiveTab('timetable')}
+          >
+            Timetable 
+          </button>
+          <button 
+            className={`px-4 py-2 rounded ${activeTab === 'milestonesReached' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+            onClick={() => setActiveTab('timetable')}
+          >
+            Timetable 
+          </button>
+          <button 
+            className={`px-4 py-2 rounded ${activeTab === 'overall' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+            onClick={() => setActiveTab('overall')}
+          >
+            总体完成度
+          </button>
+        </div>
+
+        {/* Tab Content */}
+        <div>
+          {renderTabContent()}
         </div>
       </Container>
     </main>
