@@ -118,7 +118,7 @@ const ProgressUpdate = () => {
   <div className="mb-12">
     <div className="flex justify-between items-center mb-6">
       <h2 className="text-2xl font-semibold text-gray-900">Team Member Progress</h2>
-      <Link href="https://github.com/Ryan-Chen-Yuan/HKU-Capstone-XY" className="text-blue-600 hover:text-blue-800">
+      <Link href="https://github.com/Ryan-Chen-Yuan/HKU-Capstone-XY/blob/main/docs/progress1-plan.md" className="text-blue-600 hover:text-blue-800">
         Details &rarr;
       </Link>
     </div>
